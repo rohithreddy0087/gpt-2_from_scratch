@@ -1,0 +1,6 @@
+checkpoints/*
+data/*
+logs/*
+wandb/*
+tmp.ipynb
+__pychache__/*

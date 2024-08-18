@@ -1,0 +1,13 @@
+1. use of  weight sharing between lm head and token embedings
+2. use of bfloat16 instead of float32 using torch.autocast and torch.set_float32_matmul_precision(high)
+3. use of torch.compile, unless debugging use torch.compile always
+4. flash attention
+5. change vocab_size to power of 2
+6. gradient norm clipping
+7. grad accumulation - in offical gpt-3 paper for every forward and backward pass they use 0.5M tokens for the small model, so this comes upto
+   a batch size of 488 for a context length of 1024, GPUs cannot handilethis large data, hence we use grad accumulation, we perform
+   micro steps for 488/16(the max batch size my GPU can handle) times, and we accumulate the gradients and then perform a the update
+8. Fused AdamW optimizer
+
+max steps are calculated as 9035582489(Total number of tokens in train set)/2**19(batch size) = 17234
+warmup steps are based on GPT-3 paper = 375e6/2**19
